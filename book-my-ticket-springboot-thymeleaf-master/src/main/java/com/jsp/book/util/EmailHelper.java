@@ -15,8 +15,8 @@ import lombok.RequiredArgsConstructor;
 public class EmailHelper {
 
 	private static final String FROM_EMAIL = "bookmy-ticket.com";
-	private static final String FROM_NAME = "Book-My-Ticket";
-	private static final String SUBJECT = "Otp for Creating Account with BookMyTicket";
+	private static final String FROM_NAME = "cinema-reserve";
+	private static final String SUBJECT = "Otp for Creating Account with CinemaReserve";
 	private static final String TEMPLATE = "email-template.html";
 
 	private final JavaMailSender mailSender;

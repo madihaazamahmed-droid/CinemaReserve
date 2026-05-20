@@ -1,6 +1,6 @@
 Resume: 
 ----------------------------------------------------------------------------------------------------------------------
-Project: Book My Ticket – Online Movie Ticket Booking System
+Project: Cinema Reserve – Online Movie Ticket Booking System
 
 Description:
 Developed a full-stack web application for online movie ticket booking with separate Admin and User modules. 
@@ -25,7 +25,7 @@ Razorpay, Cloudinary, JavaMailSender, QR Code Generator
 ------------------------------------------------------------------------------------------------------------------------
 
 Short Explanation:
-Book My Ticket is an online movie ticket booking application developed using Spring Boot and Thymeleaf. 
+Cinema Reserve is an online movie ticket booking application developed using Spring Boot and Thymeleaf. 
 It has two modules: Admin and User.
 Admins can manage movies, theaters, screens, seat layouts, and users, while users can register using OTP-based email verification,
 view available shows, book seats, make payments using Razorpay, and receive QR-coded tickets. Cloudinary is used for image storage,

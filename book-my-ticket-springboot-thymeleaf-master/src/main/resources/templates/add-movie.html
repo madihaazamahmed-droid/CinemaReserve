@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Add Movie - BookMyTicket Admin</title>
+<title>Add Movie - CinemaReserve Admin</title>
 
 <!-- Favicon -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -271,13 +271,18 @@ to {
 				enctype="multipart/form-data">
 
 				<div class="form-group">
-					<label>Movie Name *</label> <input class="form-control"
-						th:field="*{name}" placeholder="Enter movie name"> <span
-						class="error-text" th:errors="*{name}"></span>
+					<label>Movie Name *</label>
+					<div class="input-group">
+						<input class="form-control" th:field="*{name}" id="movieName"
+							placeholder="Enter movie name">
+						<button type="button" class="btn btn-warning fw-bold"
+							onclick="fetchMovieInfo()">Fetch Details</button>
+					</div>
+					<span class="error-text" th:errors="*{name}"></span>
 				</div>
 
 				<div class="form-group">
-					<label>Genre *</label> <input class="form-control"
+					<label>Genre *</label> <input class="form-control" id="genre"
 						th:field="*{genre}" placeholder="Action, Drama"> <span
 						class="error-text" th:errors="*{genre}"></span>
 				</div>
@@ -295,31 +300,36 @@ to {
 				</div>
 
 				<div class="form-group">
-					<label>Poster *</label> <input type="file" class="form-file"
-						th:field="*{image}" accept="image/*"> <span
-						class="error-text" th:errors="*{image}"></span>
+					<label>Poster (Upload or Fetch) *</label>
+					<input type="file" class="form-file mb-2" th:field="*{image}" accept="image/*">
+					<input type="hidden" id="imageUrl" th:field="*{imageUrl}">
+					<div id="posterPreview" class="mt-2 d-none">
+						<p class="small text-muted mb-1">Preview from URL:</p>
+						<img src="" id="previewImg" style="height: 150px; border-radius: 8px;">
+					</div>
+					<span class="error-text" th:errors="*{image}"></span>
 				</div>
 
 				<div class="form-group">
-					<label>Trailer Link</label> <input class="form-control"
+					<label>Trailer Link</label> <input class="form-control" id="trailerLink"
 						th:field="*{trailerLink}" placeholder="https://youtube.com/...">
 				</div>
 
 				<div class="form-group">
 					<label>Description *</label>
-					<textarea class="form-control" rows="3" th:field="*{description}"></textarea>
+					<textarea class="form-control" rows="3" th:field="*{description}" id="description"></textarea>
 					<span class="error-text" th:errors="*{description}"></span>
 				</div>
 
 				<div class="form-group">
 					<label>Release Date *</label> <input type="date"
-						class="form-control" th:field="*{releaseDate}"> <span
+						class="form-control" th:field="*{releaseDate}" id="releaseDate"> <span
 						class="error-text" th:errors="*{releaseDate}"></span>
 				</div>
 
 				<div class="form-group">
 					<label>Cast *</label> <input class="form-control"
-						th:field="*{cast}" placeholder="Actor 1, Actor 2"> <span
+						th:field="*{cast}" id="cast" placeholder="Actor 1, Actor 2"> <span
 						class="error-text" th:errors="*{cast}"></span>
 				</div>
 
@@ -331,6 +341,65 @@ to {
 			</form>
 		</div>
 	</div>
+
+	<script>
+		async function fetchMovieInfo() {
+			const movieName = document.getElementById('movieName').value;
+			if (!movieName) {
+				alert('Please enter a movie name first');
+				return;
+			}
+			
+			const apiKey = '9478f6a9e1d8a4362b1b1626017b2b51'; 
+			const url = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${encodeURIComponent(movieName)}`;
+			
+			try {
+				const response = await fetch(url);
+				const data = await response.json();
+				if (data.results && data.results.length > 0) {
+					const movie = data.results[0];
+					document.getElementById('description').value = movie.overview;
+					document.getElementById('releaseDate').value = movie.release_date;
+					
+					// Poster URL
+					const posterUrl = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
+					document.getElementById('imageUrl').value = posterUrl;
+					document.getElementById('previewImg').src = posterUrl;
+					document.getElementById('posterPreview').classList.remove('d-none');
+
+					// Fetch trailer and details
+					const detailsUrl = `https://api.themoviedb.org/3/movie/${movie.id}?api_key=${apiKey}&append_to_response=videos,credits`;
+					const detailsRes = await fetch(detailsUrl);
+					const details = await detailsRes.json();
+					
+					// Genre
+					if (details.genres) {
+						document.getElementById('genre').value = details.genres.map(g => g.name).join(', ');
+					}
+					
+					// Cast
+					if (details.credits && details.credits.cast) {
+						document.getElementById('cast').value = details.credits.cast.slice(0, 5).map(c => c.name).join(', ');
+					}
+
+					// Trailer
+					if (details.videos && details.videos.results) {
+						const trailer = details.videos.results.find(v => v.type === 'Trailer' && v.site === 'YouTube');
+						if (trailer) {
+							document.getElementById('trailerLink').value = `https://www.youtube.com/watch?v=${trailer.key}`;
+						}
+					}
+					
+					alert('Movie details fetched successfully!');
+				} else {
+					alert('No movie found with that name');
+				}
+			} catch (error) {
+				console.error(error);
+				alert('Error fetching movie details');
+			}
+		}
+	</script>
 
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

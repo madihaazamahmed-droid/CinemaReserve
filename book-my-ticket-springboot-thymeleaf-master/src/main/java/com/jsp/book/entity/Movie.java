@@ -34,13 +34,13 @@ public class Movie {
 	@Column(nullable = false)
 	private LocalTime duration;
 
-	@Column(nullable = false)
+	@Column(nullable = false, length = 1000)
 	private String imageLink;
 
-	@Column(nullable = false)
+	@Column(nullable = false, length = 1000)
 	private String trailerLink;
 
-	@Column(nullable = false, length = 500)
+	@Column(nullable = false, length = 1000)
 	private String description;
 
 	@Column(nullable = false)

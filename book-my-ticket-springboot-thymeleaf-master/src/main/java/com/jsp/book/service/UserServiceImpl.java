@@ -421,8 +421,10 @@ public class UserServiceImpl implements UserService {
 
 		// Image validation
 		MultipartFile image = theaterDto.getImage();
-		if (image == null || image.isEmpty()) {
-			result.rejectValue("image", "error.image", "* Image is Required");
+		String imageUrl = theaterDto.getImageLocation();
+		
+		if ((image == null || image.isEmpty()) && (imageUrl == null || imageUrl.isBlank())) {
+			result.rejectValue("image", "error.image", "* Either Image File or URL is Required");
 		}
 
 		// Validation failure
@@ -434,7 +436,13 @@ public class UserServiceImpl implements UserService {
 		theater.setName(theaterDto.getName());
 		theater.setAddress(theaterDto.getAddress());
 		theater.setLocationLink(theaterDto.getLocationLink());
-		theater.setImageLocation(cloudinaryHelper.getTheaterImageLink(image));
+		theater.setScreenCount(0); // Initialize screen count
+		
+		if (image != null && !image.isEmpty()) {
+			theater.setImageLocation(cloudinaryHelper.getTheaterImageLink(image));
+		} else {
+			theater.setImageLocation(imageUrl);
+		}
 
 		theaterRepository.save(theater);
 
@@ -496,7 +504,7 @@ public class UserServiceImpl implements UserService {
 		Theater theater = optionalTheater.get();
 
 		TheaterDto theaterDto = new TheaterDto(theater.getName(), theater.getAddress(), theater.getLocationLink(),
-				null);
+				null, theater.getImageLocation());
 
 		map.put("id", theater.getId());
 		map.put("imageLink", theater.getImageLocation());
@@ -530,10 +538,11 @@ public class UserServiceImpl implements UserService {
 		theater.setLocationLink(theaterDto.getLocationLink());
 
 		MultipartFile image = theaterDto.getImage();
+		String imageUrl = theaterDto.getImageLocation();
 
-		// 🔥 Cloudinary logic (same as addTheater)
 		if (image != null && !image.isEmpty()) {
-			String imageUrl = cloudinaryHelper.getTheaterImageLink(image);
+			theater.setImageLocation(cloudinaryHelper.getTheaterImageLink(image));
+		} else if (imageUrl != null && !imageUrl.isBlank()) {
 			theater.setImageLocation(imageUrl);
 		}
 		// else → keep existing image (no change needed)
@@ -812,8 +821,8 @@ public class UserServiceImpl implements UserService {
 		Screen screen = screenRepository.findById(screenId).orElseThrow();
 
 		for (SeatRowDto row : form.getRows()) {
+			if (row == null) continue;
 			for (int i = 1; i <= row.getTotalSeats(); i++) {
-
 				Seat seat = new Seat();
 				seat.setScreen(screen);
 				seat.setSeatRow(row.getRowName());
@@ -879,16 +888,24 @@ public class UserServiceImpl implements UserService {
 		}
 
 		// Image validation
-		if (movieDto.getImage() == null || movieDto.getImage().isEmpty()) {
-			result.rejectValue("image", "error.image", "* Image is Required");
+		if ((movieDto.getImage() == null || movieDto.getImage().isEmpty()) 
+				&& (movieDto.getImageUrl() == null || movieDto.getImageUrl().isBlank())) {
+			result.rejectValue("image", "error.image", "* Image or Image URL is Required");
 		}
 
 		if (result.hasErrors()) {
 			return "add-movie.html";
 		}
+		
+		String finalImageLink = "";
+		if (movieDto.getImage() != null && !movieDto.getImage().isEmpty()) {
+			finalImageLink = cloudinaryHelper.generateImageLink(movieDto.getImage());
+		} else {
+			finalImageLink = movieDto.getImageUrl();
+		}
 
 		Movie movie = new Movie(null, movieDto.getName(), movieDto.getLanguages(), movieDto.getGenre(),
-				movieDto.getDuration(), cloudinaryHelper.generateImageLink(movieDto.getImage()),
+				movieDto.getDuration(), finalImageLink,
 				movieDto.getTrailerLink(), movieDto.getDescription(), movieDto.getReleaseDate(), movieDto.getCast());
 
 		movieRepository.save(movie);
@@ -1037,8 +1054,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public String loadMain(ModelMap map) {
 
-		Set<Movie> movies = showRepository.findByShowDateAfter(LocalDate.now().minusDays(1)).stream()
-				.map(Show::getMovie).collect(Collectors.toSet());
+		List<Movie> movies = movieRepository.findAll();
 
 		map.put("movies", movies);
 		return "main";
@@ -1151,8 +1167,8 @@ public class UserServiceImpl implements UserService {
 
 		User loggedInUser = getUserFromSession(session);
 
-		// User authorization
-		if (loggedInUser == null || !"USER".equals(loggedInUser.getRole())) {
+		// User authorization (Allow ADMIN for testing)
+		if (loggedInUser == null || (!"USER".equals(loggedInUser.getRole()) && !"ADMIN".equals(loggedInUser.getRole()))) {
 			attributes.addFlashAttribute("fail", "Login to Continue Booking");
 			return "redirect:/login";
 		}
@@ -1182,8 +1198,8 @@ public class UserServiceImpl implements UserService {
 
 		User loggedInUser = getUserFromSession(session);
 
-		// Authorization
-		if (loggedInUser == null || !"USER".equals(loggedInUser.getRole())) {
+		// Authorization (Allow ADMIN for testing)
+		if (loggedInUser == null || (!"USER".equals(loggedInUser.getRole()) && !"ADMIN".equals(loggedInUser.getRole()))) {
 			attributes.addFlashAttribute("fail", "Login to Continue Booking");
 			return "redirect:/login";
 		}
@@ -1260,8 +1276,8 @@ public class UserServiceImpl implements UserService {
 
 		User loggedInUser = getUserFromSession(session);
 
-		// Authorization
-		if (loggedInUser == null || !"USER".equals(loggedInUser.getRole())) {
+		// Authorization (Allow ADMIN for testing)
+		if (loggedInUser == null || (!"USER".equals(loggedInUser.getRole()) && !"ADMIN".equals(loggedInUser.getRole()))) {
 			attributes.addFlashAttribute("fail", "Login to Continue Booking");
 			return "redirect:/login";
 		}

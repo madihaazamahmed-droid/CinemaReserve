@@ -24,10 +24,10 @@ public class Theater {
 	@Column(nullable = false, length = 500)
 	private String address;
 
-	@Column(nullable = false, length = 500)
+	@Column(nullable = false, length = 1000)
 	private String locationLink;
 
-	@Column(nullable = false)
+	@Column(nullable = false, length = 1000)
 	private String imageLocation;
 
 	private Integer screenCount;

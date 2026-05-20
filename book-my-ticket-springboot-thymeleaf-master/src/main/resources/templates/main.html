@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BookMyTicket</title>
+<title>CinemaReserve</title>
 
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link
@@ -13,240 +13,15 @@
 	href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&display=swap"
 	rel="stylesheet">
 
-<style>
-:root {
-	--bg-main: #0f172a;
-	--bg-card: #111827;
-	--border: #1f2937;
-	--text-main: #e5e7eb;
-	--text-muted: #9ca3af;
-	--accent: #6496ff;
-	--accent-pink: #ff4081;
-}
-
-/* ===== GLOBAL ===== */
-body {
-	font-family: "Poppins", sans-serif;
-	background: radial-gradient(circle at top, #1e293b, var(--bg-main));
-	color: var(--text-main);
-	min-height: 100vh;
-}
-
-/* ===== NAVBAR ===== */
-.navbar {
-	background: rgba(17, 24, 39, .85) !important;
-	backdrop-filter: blur(14px);
-	border-bottom: 1px solid var(--border);
-	padding: .9rem 2rem;
-}
-
-.navbar-brand {
-	font-weight: 900;
-	font-size: 1.5rem;
-	background: linear-gradient(135deg, var(--accent), var(--accent-pink));
-	-webkit-background-clip: text;
-	-webkit-text-fill-color: transparent;
-}
-
-.nav-link {
-	color: var(--text-muted) !important;
-	font-weight: 600;
-}
-
-.nav-link:hover {
-	color: var(--accent-pink) !important
-}
-
-/* ===== HERO ===== */
-.hero {
-	padding: 100px 20px;
-	text-align: center;
-	position: relative;
-}
-
-.hero h1 {
-	font-size: 3.2rem;
-	font-weight: 900;
-	background: linear-gradient(135deg, var(--accent), var(--accent-pink));
-	-webkit-background-clip: text;
-	-webkit-text-fill-color: transparent;
-}
-
-.hero p {
-	color: var(--text-muted);
-	font-size: 1.15rem;
-	margin-top: 10px;
-}
-
-.hero .btn {
-	margin-top: 25px;
-	padding: 14px 36px;
-	font-weight: 700;
-	border-radius: 14px;
-	background: linear-gradient(135deg, var(--accent), var(--accent-pink));
-	border: none;
-	box-shadow: 0 15px 35px rgba(100, 150, 255, .45);
-}
-
-.hero .btn:hover {
-	transform: translateY(-3px);
-	box-shadow: 0 25px 55px rgba(100, 150, 255, .6);
-}
-
-/* ===== MOVIES ===== */
-#movies {
-	padding: 90px 0;
-}
-
-#movies h2 {
-	text-align: center;
-	font-weight: 900;
-	margin-bottom: 60px;
-}
-
-/* ===== MOVIE CARD ===== */
-.movie-card {
-	background: linear-gradient(180deg, #111827, #0b1220);
-	border: 1px solid var(--border);
-	border-radius: 18px;
-	overflow: hidden;
-	box-shadow: 0 20px 45px rgba(0, 0, 0, .6);
-	transition: .4s ease;
-	height: 100%;
-}
-
-.movie-card:hover {
-	transform: translateY(-10px) scale(1.02);
-	box-shadow: 0 35px 80px rgba(0, 0, 0, .8);
-	border-color: var(--accent);
-}
-
-.movie-card img {
-	height: 280px;
-	object-fit: cover;
-}
-
-.movie-card .card-body {
-	padding: 22px;
-	display: flex;
-	flex-direction: column;
-}
-
-.movie-card h5 {
-	font-weight: 700;
-	margin-bottom: 6px;
-}
-
-.movie-card .text-muted {
-	color: var(--text-muted) !important;
-	font-size: .9rem;
-}
-
-.movie-card .btn {
-	margin-top: auto;
-	border-radius: 12px;
-	background: linear-gradient(135deg, var(--accent), var(--accent-pink));
-	border: none;
-	font-weight: 700;
-}
-
-/* ===== BUTTONS ===== */
-.btn-outline-light {
-	border: 2px solid var(--accent);
-	color: var(--accent);
-	font-weight: 700;
-}
-
-.btn-outline-light:hover {
-	background: var(--accent);
-	color: #fff;
-}
-
-.btn-danger {
-	background: linear-gradient(135deg, #ff4d4d, #ff1e1e);
-	border: none;
-}
-
-.btn-primary {
-	background: linear-gradient(135deg, var(--accent), var(--accent-pink));
-	border: none;
-}
-
-/* ===== FOOTER ===== */
-footer {
-	border-top: 1px solid var(--border);
-	text-align: center;
-	padding: 25px;
-	color: var(--text-muted);
-	margin-top: 80px;
-}
-
-/* ===== TOASTS ===== */
-.toastify-container {
-	position: fixed;
-	top: 20px;
-	right: 20px;
-	z-index: 9999;
-}
-
-.toastify {
-	min-width: 300px;
-	padding: 14px 18px;
-	border-radius: 12px;
-	display: flex;
-	gap: 12px;
-	color: #fff;
-	font-weight: 600;
-	box-shadow: 0 20px 45px rgba(0, 0, 0, .7);
-	animation: slideIn .4s ease;
-}
-
-.toastify.success {
-	background: linear-gradient(135deg, #22c55e, #16a34a)
-}
-
-.toastify.error {
-	background: linear-gradient(135deg, #ff4081, #ff6a6a)
-}
-
-.toastify-close {
-	background: rgba(255, 255, 255, .25);
-	border: none;
-	width: 26px;
-	height: 26px;
-	border-radius: 50%;
-	color: #fff;
-	font-weight: 700;
-}
-
-@
-keyframes slideIn {
-	from {transform: translateX(400px);
-	opacity: 0
-}
-
-to {
-	transform: translateX(0);
-	opacity: 1
-}
-
-}
-@media ( max-width :768px) {
-	.hero h1 {
-		font-size: 2.2rem
-	}
-	.movie-card img {
-		height: 230px
-	}
-}
-</style>
+<link rel="stylesheet" href="/css/style.css">
 </head>
 
 <body>
 
 	<!-- NAVBAR -->
 	<nav class="navbar navbar-expand-lg">
-		<a class="navbar-brand" href="/">🎬 BookMyTicket</a>
+		<div class="container-fluid">
+			<a class="navbar-brand" href="/">🎬 <span>CinemaReserve</span></a>
 
 		<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
 			data-bs-target="#navMenu">
@@ -275,40 +50,55 @@ to {
 					class="btn btn-primary">Logout</a>
 			</div>
 
+			</div>
 		</div>
 	</nav>
 
 	<!-- TOASTS -->
 	<div class="toastify-container">
-		<div th:if="${pass}" class="toastify success">
+		<div th:if="${pass}" class="custom-toast success">
 			<span th:text="${pass}"></span>
+			<button class="custom-toast-close" onclick="this.parentElement.remove()">×</button>
 		</div>
-		<div th:if="${fail}" class="toastify error">
+		<div th:if="${fail}" class="custom-toast error">
 			<span th:text="${fail}"></span>
+			<button class="custom-toast-close" onclick="this.parentElement.remove()">×</button>
 		</div>
 	</div>
 
 	<!-- HERO -->
-	<section class="hero">
-		<h1>Book Your Favorite Movies</h1>
-		<p>Fast • Secure • Premium Experience</p>
-		<a href="#movies" class="btn">Browse Movies</a>
+	<section class="hero-section">
+		<h1 class="hero-title text-gradient">Book Your Favorite Movies</h1>
+		<p class="hero-subtitle">Fast • Secure • Premium Experience</p>
+		<a href="#movies" class="btn btn-primary btn-lg mt-3">Browse Movies</a>
 	</section>
 
 	<!-- MOVIES -->
-	<section class="container" id="movies" th:if="${!movies.isEmpty()}">
-		<h2>Now Showing</h2>
+	<section class="container mb-5" id="movies">
+		<h2 class="text-center mb-5" th:text="${movies.isEmpty() ? 'No Movies Available' : 'Now Showing'}">Now Showing</h2>
 
-		<div class="row g-4">
+		<div th:if="${movies.isEmpty()}" class="text-center py-5 glass-card">
+			<p class="text-secondary fs-4 m-0">Check back later for new releases!</p>
+		</div>
+
+		<div th:if="${!movies.isEmpty()}" class="row g-4">
 			<div class="col-lg-3 col-md-4 col-sm-6" th:each="movie:${movies}">
 				<div class="movie-card">
-					<img th:src="${movie.imageLink}">
+					<div class="movie-image-container">
+						<img th:src="${movie.imageLink}">
+						<button th:if="${movie.trailerLink != null}" 
+								class="btn btn-trailer position-absolute top-0 end-0 m-3"
+								th:attr="data-trailer=${movie.trailerLink}, data-name=${movie.name}"
+								onclick="openTrailer(this)">
+							▶ Trailer
+						</button>
+					</div>
 					<div class="card-body">
 						<h5 th:text="${movie.name}"></h5>
-						<p class="text-muted">
-							<span th:text="${movie.genre}"></span> • <span
-								th:text="${movie.duration}"></span> hrs
-						</p>
+						<div class="d-flex justify-content-between align-items-center mb-4 mt-2">
+							<span class="movie-badge" th:text="${movie.genre}"></span>
+							<span class="text-secondary small fw-medium"><span th:text="${movie.duration}"></span> hrs</span>
+						</div>
 						<a th:href="'/book/movie/'+${movie.id}"
 							class="btn btn-primary w-100">Book Now</a>
 					</div>
@@ -317,8 +107,64 @@ to {
 		</div>
 	</section>
 
-	<footer>
-		<p>© 2025 BookMyTicket — All Rights Reserved</p>
+	<!-- TRAILER MODAL -->
+	<div class="modal fade" id="trailerModal" tabindex="-1" aria-hidden="true">
+		<div class="modal-dialog modal-lg modal-dialog-centered">
+			<div class="modal-content bg-dark border-secondary">
+				<div class="modal-header border-0">
+					<h5 class="modal-title text-white" id="modalMovieName">Trailer</h5>
+					<button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body p-0">
+					<div class="ratio ratio-16x9">
+						<iframe id="trailerFrame" src="" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		function openTrailer(btn) {
+			let link = btn.getAttribute('data-trailer');
+			let name = btn.getAttribute('data-name');
+			
+			if (!link || link === 'null') {
+				alert('Trailer not available for this movie.');
+				return;
+			}
+			
+			// Convert YouTube watch link to embed link
+			if (link.includes('youtube.com/watch?v=')) {
+				link = link.replace('watch?v=', 'embed/');
+			} else if (link.includes('youtu.be/')) {
+				link = 'https://www.youtube.com/embed/' + link.split('/').pop();
+			} else if (!link.includes('embed') && link.length < 20) {
+				// Assume it's just an ID
+				link = 'https://www.youtube.com/embed/' + link;
+			}
+			
+			// Ensure protocol
+			if (!link.startsWith('http')) {
+				link = 'https://' + link;
+			}
+			
+			const frame = document.getElementById('trailerFrame');
+			frame.src = link;
+			document.getElementById('modalMovieName').innerText = name + " - Trailer";
+			
+			let modal = new bootstrap.Modal(document.getElementById('trailerModal'));
+			modal.show();
+			
+			// Stop video when modal closed
+			document.getElementById('trailerModal').addEventListener('hidden.bs.modal', function () {
+				frame.src = "";
+			});
+		}
+	</script>
+
+	<footer class="py-4 text-center text-secondary border-top border-secondary mt-5" style="border-color: rgba(255,255,255,0.1) !important;">
+		<p class="mb-0">© 2025 CinemaReserve — All Rights Reserved</p>
 	</footer>
 
 	<script

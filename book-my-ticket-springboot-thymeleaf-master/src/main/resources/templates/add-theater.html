@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Add Theater - BookMyTicket Admin</title>
+<title>Add Theater - CinemaReserve Admin</title>
 
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 
@@ -206,7 +206,12 @@ to {
 				</div>
 
 				<div class="form-group">
-					<label>Theater Image</label> <input type="file" th:field="*{image}"
+					<label>Image URL (Optional if uploading file)</label> 
+					<input type="text" th:field="*{imageLocation}" class="form-control" placeholder="Paste image link here">
+				</div>
+
+				<div class="form-group">
+					<label>Theater Image File</label> <input type="file" th:field="*{image}"
 						class="form-file" accept="image/*"> <span
 						class="error-text" th:errors="*{image}"></span>
 				</div>

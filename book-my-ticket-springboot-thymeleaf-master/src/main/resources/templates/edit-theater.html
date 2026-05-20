@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Edit Theater | BookMyTicket Admin</title>
+<title>Edit Theater | CinemaReserve Admin</title>
 
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link
@@ -234,7 +234,12 @@ to {
 				</div>
 
 				<div class="form-group">
-					<label>Update Image (Optional)</label> <input type="file"
+					<label>Update via URL (Optional)</label> 
+					<input type="text" th:field="*{imageLocation}" class="form-control" placeholder="Paste new image link">
+				</div>
+
+				<div class="form-group">
+					<label>Update via File (Optional)</label> <input type="file"
 						th:field="*{image}" class="form-file" accept="image/*">
 					<p class="image-note">Leave empty to keep current image</p>
 					<div class="error-text" th:errors="*{image}"></div>

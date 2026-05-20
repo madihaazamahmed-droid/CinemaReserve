@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.jsp</groupId>
-	<artifactId>book-my-ticket</artifactId>
+	<artifactId>cinema-reserve</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>book-my-ticket</name>
+	<name>cinema-reserve</name>
 	<description>Movie Ticket App using Spring boot and thymeleaf</description>
 	<url/>
 	<licenses>

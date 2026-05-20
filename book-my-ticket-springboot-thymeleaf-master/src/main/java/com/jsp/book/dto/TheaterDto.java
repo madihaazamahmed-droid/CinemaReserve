@@ -8,8 +8,11 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import lombok.NoArgsConstructor;
+
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class TheaterDto {
 
 	@Size(min = 3, max = 50, message = "* Enter between 3 ~ 50 characters")
@@ -21,6 +24,7 @@ public class TheaterDto {
 	@NotBlank(message = "* Location Link is Required")
 	private String locationLink;
 
-	@NotNull(message = "* Image is Required")
 	private MultipartFile image;
+	
+	private String imageLocation;
 }
